@@ -5,6 +5,12 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+from .serializers import UserDetailSerializer
+
+
 User = get_user_model()
 
 
@@ -16,6 +22,12 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
 
 user_detail_view = UserDetailView.as_view()
+
+
+class UserProfileDetailView(APIView):
+    def get(self, request):
+        serializer = UserDetailSerializer(request.user)
+        return Response(serializer.data)
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
