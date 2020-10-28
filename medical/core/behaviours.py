@@ -36,7 +36,7 @@ class AddressMixin(models.Model):
         abstract = True
 
 
-class ProfileMixin(models.Model):
+class ProfileMixin(MobileMixin, AddressMixin):
     alternate_mobile = models.CharField(_("Alternate Mobile Number"), max_length=100, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)
 
