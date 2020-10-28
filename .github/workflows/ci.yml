@@ -7,7 +7,7 @@ env:
 
 on:
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "development" ]
     paths-ignore: [ "docs/**" ]
 
   push:
@@ -43,7 +43,7 @@ jobs:
 
       - name: Checkout Code Repository
         uses: actions/checkout@v2
-      
+
 
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
@@ -55,7 +55,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(pip cache dir)"
 
-      
+
       - name: Cache pip Project Dependencies
         uses: actions/cache@v2
         with:
@@ -65,7 +65,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/local.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
-      
+
 
       - name: Install Dependencies
         run: |
