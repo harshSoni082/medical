@@ -6,6 +6,7 @@ from model_utils.models import TimeStampedModel
 
 from medical.core.behaviours import StatusMixin, ProfileMixin
 
+
 class User(AbstractUser):
     """Default user for medical."""
 

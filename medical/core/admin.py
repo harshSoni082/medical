@@ -1,4 +1,4 @@
-# from django.contrib import admin
+from django.contrib import admin
 
 from medical.core.models import Country, City, State
 
