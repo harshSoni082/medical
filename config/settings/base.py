@@ -9,7 +9,7 @@ import environ
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # medical/
 APPS_DIR = ROOT_DIR / "medical"
-REACT_APP_DIR = ROOT_DIR.path("medical_client")
+REACT_APP_DIR = ROOT_DIR / "medical_client"
 env = environ.Env()
 
 READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
@@ -170,7 +170,7 @@ STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = [str(APPS_DIR / "static"),
-                    os.path.join(str(REACT_APP_DIR.path("build")), 'static'), ]
+                    os.path.join(REACT_APP_DIR, "build", 'static'), ]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
