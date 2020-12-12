@@ -27,7 +27,7 @@ class Footer extends Component {
 
         const logo = {
             className: 'logo',
-            text: 'medic.ai',
+            text: 'cxd',
         }
 
         const logo_style = {
@@ -35,6 +35,7 @@ class Footer extends Component {
             fontSize: '10vh',
             fontFamily: 'Monoton',
             marginTop: '500px',
+            marginLeft: '40%',
             // fontWeight: 700,
             // border: '2px solid white',
         }
@@ -73,7 +74,7 @@ class Footer extends Component {
                 <Row gutter={[64, 0]}>
                     <Col span={24}>
                         <div style={{textAlign: 'center'}}>
-                            Copyright &copy; medic.ai 2020
+                            Copyright &copy; cxd 2020
                         </div>
                     </Col>
                 </Row>

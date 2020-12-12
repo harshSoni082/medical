@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, Button } from 'antd';
 import { UserOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 
+import { getUser } from 'redux/user/user.action';
+import { connect } from 'react-redux';
+import TOKEN_API from 'apis/tokenAPI';
+import HELPERS from 'utils/helpers';
+
 class SignIn extends Component {
+    formRef = React.createRef()
+
     constructor(props) {
         super(props)
         this.state = {
@@ -11,8 +18,33 @@ class SignIn extends Component {
     }
 
     _submit = () => {
-        alert("Not Implemented");
+        let $form = this.formRef.current
+        let responseData;
+        $form.validateFields().then(values => {
+            values.username = values.username
+            values.password = values.password
+            const data = values;
+            console.log(data);
+            TOKEN_API.getTokens(data).then(response => {
+                $form.resetFields();
+                // window.location.reload(false);
+
+                const status = response.status;
+                if(status === 200) {
+                    HELPERS.localStorageServices.storeTokens(response.data);
+                    console.log("Log In success!");
+                    this.props.getUser();
+                    localStorage["isLoggedIn"] = true;
+                    console.log(localStorage["isLoggedIn"]);
+                    window.location.assign('/app/');
+                }
+                else if(status === 401) {
+                    console.log(response.statusText);
+                }
+            })
+        })
     }
+
     handleCancel = () => {
         this.setState({
             visible: false,
@@ -40,7 +72,7 @@ class SignIn extends Component {
                         </Button>
                         ]}
                     >
-                        <Form name='signin_form' onFinish={this._submit}>
+                        <Form ref={this.formRef} name='signin_form' onFinish={this._submit}>
                             <Form.Item
                                 name="username"
                                 rules={[{ required: true, message: 'Please input UserName!' }]}
@@ -55,10 +87,24 @@ class SignIn extends Component {
                                 <Input size="large" placeholder="Password" type="password" prefix={<EyeInvisibleOutlined />} />
                             </Form.Item>
                         </Form>
+                        {/* <div style={{display: }}>Unauthorized User</div> */}
                 </Modal>
             </div>
         );
     }
 }
 
-export default SignIn;
+const mapStateToProps = state => {
+    return {
+       user: state.user,
+    }
+};
+
+const mapDipatchToProps = {
+    getUser,
+};
+
+export default connect(
+    mapStateToProps,
+    mapDipatchToProps,
+)(SignIn);

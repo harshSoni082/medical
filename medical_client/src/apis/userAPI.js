@@ -8,3 +8,5 @@ const USER_API = {
         })
     }
 }
+
+export default USER_API;
