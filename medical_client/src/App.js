@@ -1,25 +1,62 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import { Spin } from 'antd';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { getUser } from './redux/user/user.action';
+import { connect } from 'react-redux';
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoggedIn: false,
+      isLoggingOut: false,
+    }
+  }
+
+  componentDidMount() {
+    this.props.getUser().then(response => {
+      console.log(this.props.user.data);
+      if(response.status === 200) {
+        this.setState({
+          isLoggedIn: true,
+        })
+        window.location.assign("home/");
+      }
+      else {
+        this.setState({
+          isLoggingOut: true,
+        })
+        console.log(response);
+        window.location.assign("landing/");
+      }
+    })
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        {
+          (this.state.isLoggedIn || this.state.isLoggingOut) &&
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height:'100vh',}}>
+            <Spin tip="Loading..." size="large" />
+          </div>
+        }
+      </React.Fragment>
+    );
+  }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+     user: state.user,
+  }
+};
+
+const mapDipatchToProps = {
+  getUser,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDipatchToProps,
+)(App);

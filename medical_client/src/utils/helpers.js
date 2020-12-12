@@ -1,11 +1,30 @@
+import { message } from 'antd';
+// import { Image, createCanvas } from 'canvas';
+import * as tf from '@tensorflow/tfjs';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+import TOKEN_API from 'apis/tokenAPI';
+
 axios.defaults.baseURL = '/';
 axios.defaults.withCredentials = true;
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers['Content-Type'] = 'application/json';
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
-axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfCookieName = 'csrftoken';
+
+axios.interceptors.request.use(config => {
+    const token = HELPERS.localStorageServices.getAccessToken();
+    if(token) {
+        config.headers = {
+            'Authorization': 'Bearer ' + token,
+        }
+    }
+    return config;
+    },
+    error => {
+        return error.response;
+});
 
 let HELPERS = {
     isLoggedIn: () => {
@@ -13,13 +32,84 @@ let HELPERS = {
     },
 
     request: config => {
+        console.log(config);
         return axios.request(config)
             .then(response => {
+                console.log(response);
                 return response
             })
             .catch(error => {
                 return error
             })
+    },
+
+    localStorageServices: {
+        storeTokens: (tokens) => {
+            localStorage.setItem("access_token", tokens["access"]);
+            localStorage.setItem("refresh_token", tokens["refresh"]);
+        },
+    
+        getAccessToken: () => {
+            return localStorage.getItem("access_token");
+        },
+    
+        getRefreshToken: () => {
+            return localStorage.getItem("refresh_token");
+        },
+
+        clearToken: () => {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+        },
+
+        storeData: (key, value, json=true) => {
+            if (json) {
+                localStorage.setItem(key, JSON.stringify(value));
+            }
+            else {
+                localStorage.setItem(key, value);
+            }
+        },
+
+        getData: (key, json=true) => {
+            if (json) {
+                return JSON.parse(localStorage.getItem(key));
+            }
+            return localStorage.getItem(key);
+        }
+    },
+
+    image: {
+        getBase64: (buff, callback) => {
+            const reader = new FileReader();
+            reader.addEventListener('load', () => callback(reader.result));
+            reader.readAsDataURL(buff);
+          },
+
+        checkFormat: file => {
+            const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+            if (!isJpgOrPng) {
+                message.error('You can only upload JPG/PNG file!');
+            }
+            const isLt2M = file.size / 1024 / 1024 < 2;
+            if (!isLt2M) {
+                message.error('Image must smaller than 2MB!');
+            }
+            return isJpgOrPng && isLt2M;
+        },
+
+        dataURL2Tensor: (dataURL) => {
+            return new Promise((resolve, reject) => {    
+                const img = new Image();    
+                img.src = dataURL;    
+                img.onload = () => {
+                    resolve(tf.browser.fromPixels(img));
+                }    
+                img.onerror = (err) => {
+                    reject(err);
+                }  
+            });
+        }
     }
 }
 

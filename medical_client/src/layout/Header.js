@@ -13,9 +13,16 @@ class Header extends Component {
             // border: '2px solid white',
         }
 
+        const dark_header_style = {
+            backgroundColor: 'rgb(21, 23, 25)',
+            // padding: '5px 64px 5px 64px', 
+            position: 'relative',
+            // border: '2px solid white',
+        }
+
         const logo = {
             className: 'logo',
-            text: 'medic.ai',
+            text: 'cxd',
         }
 
         const logo_style = {

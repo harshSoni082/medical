@@ -1,18 +1,32 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'connected-react-router';
+import { PersistGate } from 'redux-persist/integration/react';
+
 import './index.css';
-import App from './App';
+import history from './utils/history';
+import { store, persistor } from './redux/store';
+import AppRouter from './AppRouter';
+
 import reportWebVitals from './reportWebVitals';
+import * as serviceWorker from './serviceWorker';
 
-import { Button } from 'antd';
-import Landing from './screens/Landing';
+const MOUNT_NODE = document.getElementById('root');
 
-ReactDOM.render(
-  <Landing />,
-  document.getElementById('root')
-);
+const render = () => ReactDOM.render(
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <ConnectedRouter history={history}>
+                <AppRouter />
+            </ConnectedRouter>
+        </PersistGate>
+    </Provider>,
+    MOUNT_NODE
+)
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+render();
+
+serviceWorker.unregister();
+
 reportWebVitals();

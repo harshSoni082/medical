@@ -42,7 +42,7 @@ class Banner extends Component {
                                             </span>
                                             &nbsp;&nbsp;&nbsp;
                                             <span style={banner_text_style}>
-                                                medic.ai
+                                                cxd
                                             </span>
                                         </div>
                                     </Col>
