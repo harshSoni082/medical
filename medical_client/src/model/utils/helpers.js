@@ -20,7 +20,7 @@ const all_labels = [
 const MODEL_HELPERS = {
     model: {
         load_chexnet: async () => {
-            const chexnet = await tf.loadLayersModel('http://[::]:8000/pre_trained/chexnet/model.json');
+            const chexnet = await tf.loadLayersModel('http://[::]:8080/pre_trained/chexnet/model.json');
 
             return chexnet;
         },
