@@ -6,6 +6,14 @@ const USER_API = {
             url: `/users/details/`,
             method: 'GET',
         })
+    },
+
+    createUser: (data) => {
+        return HELPERS.request({
+            url: `/users/create/`,
+            method: 'POST',
+            data: data,
+        })
     }
 }
 

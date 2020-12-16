@@ -19,6 +19,7 @@ const sider_style = {
 class APP_SIDEBAR extends React.Component {
     clearLocalStorage() {
         HELPERS.localStorageServices.clearToken();
+        HELPERS.localStorageServices.clearData('diagnosis');
     }
 
     render() {

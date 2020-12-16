@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Row, Col } from 'antd';
 import TweenOne from 'rc-tween-one';
 
@@ -69,7 +70,7 @@ class Banner extends Component {
                                     </Col>
                                     <Col span={12}>
                                         <div style={{float: 'left'}}>
-                                            <Button type="primary" size="large" style={{background: 'rgba(255, 255, 255, 0.1)', border: 'None'}}>
+                                            <Button type="primary" size="large" href="https://github.com/harshSoni082/medical" target="_blank" style={{background: 'rgba(255, 255, 255, 0.1)', border: 'None'}}>
                                                 View on Github
                                             </Button>
                                         </div>

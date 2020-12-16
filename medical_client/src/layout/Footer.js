@@ -11,6 +11,10 @@ class Footer extends Component {
             paddingLeft: '5%',
             paddingRight: '5%',
         }
+        
+        const footer_data_style = {
+            color: 'rgb(21, 23, 25)',
+        }
 
         const footerResourcesData = [
             'Ant Design',
@@ -20,9 +24,9 @@ class Footer extends Component {
         ]
 
         const footerHelpData = [
-            {name: 'GitHub', icon: <GithubOutlined />},
-            {name: 'Bug Report', icon: <BugOutlined />},
-            {name: 'Issues', icon: <IssuesCloseOutlined />},
+            {name: 'GitHub', icon: <GithubOutlined />, href: "https://github.com/harshSoni082/medical"},
+            {name: 'Bug Report', icon: <BugOutlined />, href: "https://github.com/harshSoni082/medical/issues"},
+            {name: 'Issues', icon: <IssuesCloseOutlined />, href: "https://github.com/harshSoni082/medical/issues"},
         ]
 
         const logo = {
@@ -59,7 +63,7 @@ class Footer extends Component {
                                 dataSource={footerHelpData}
                                 header={<b>Help</b>}
                                 grid={{xs: '500px', column: 1}}
-                                renderItem={item => <List.Item>{item.icon}&nbsp;{item.name}</List.Item>}
+                                renderItem={item => <List.Item><a href={item.href} style={footer_data_style} target="_blank">{item.icon}&nbsp;{item.name}</a></List.Item>}
                             />
                         </div>
                     </Col>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import App from './App';
 import Home from 'screens/Home/index';
@@ -28,6 +28,15 @@ class AppRouter extends Component {
             <React.Fragment>
                 <BrowserRouter history={this.props.history}>
                     <Switch>
+                        <Route
+                            exact
+                            path='/'
+                        >
+                            <Redirect
+                                to='/app/' 
+                            />
+                        </Route>
+
                         <Route 
                             exact
                             path='/app/'

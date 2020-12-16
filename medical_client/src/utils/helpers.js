@@ -26,6 +26,29 @@ axios.interceptors.request.use(config => {
         return error.response;
 });
 
+axios.interceptors.response.use(response => {
+    return response;
+},
+function(error) {
+    const originalRequest = error.config;
+    console.log(originalRequest);
+    if(error.response.status === 401 && 
+       originalRequest.url == "/api/token/refresh/") {
+        return error
+    }
+    if(error.response.status === 401) {
+        const refresh_token = HELPERS.localStorageServices.getRefreshToken()
+        HELPERS.localStorageServices.clearData('access_token');
+        const res = HELPERS.request(TOKEN_API.refreshToken(refresh_token))
+        if(res.status === 200) {
+            HELPERS.localStorageServices.storeTokens(res.data)
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + HELPERS.localStorageServices.getAccessToken();
+            return axios(originalRequest)
+        }
+    }
+    return error;
+});
+
 let HELPERS = {
     isLoggedIn: () => {
         return localStorage.getItem('isLoggedIn');
@@ -45,8 +68,12 @@ let HELPERS = {
 
     localStorageServices: {
         storeTokens: (tokens) => {
-            localStorage.setItem("access_token", tokens["access"]);
-            localStorage.setItem("refresh_token", tokens["refresh"]);
+            if(tokens['access']) {
+                localStorage.setItem("access_token", tokens["access"]);
+            }
+            if(tokens['refresh']) {
+                localStorage.setItem("refresh_token", tokens["refresh"]);
+            }
         },
     
         getAccessToken: () => {
@@ -76,6 +103,10 @@ let HELPERS = {
                 return JSON.parse(localStorage.getItem(key));
             }
             return localStorage.getItem(key);
+        },
+
+        clearData: (key) => {
+            localStorage.removeItem(key);
         }
     },
 
