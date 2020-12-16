@@ -1,8 +1,22 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button } from 'antd';
-import { UserOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { 
+    Modal, 
+    Form, 
+    Input, 
+    Button,
+    Radio,
+    DatePicker } from 'antd';
+import { 
+    UserOutlined, 
+    EyeInvisibleOutlined, 
+    MailOutlined, 
+    MobileOutlined,
+    CalendarOutlined } from '@ant-design/icons';
+import USER_API from 'apis/userAPI';
 
 class SignUp extends Component {
+    formRef = React.createRef()
+
     constructor(props) {
         super(props)
         this.state = {
@@ -12,7 +26,26 @@ class SignUp extends Component {
     }
 
     _submit = () => {
-        alert("Not Implemented");
+        let $form = this.formRef.current
+        $form.validateFields().then(values => {
+            const data = {
+                'first_name': values.first_name,
+                'last_name': values.last_name,
+                'email': values.email,
+                'username': values.username,
+                'password': values.password,
+                'user_profile': {
+                    'mobile': values.mobile,
+                    'date_of_birth': values.dob.format("YYYY-MM-DD"),
+                    'gender': values.gender[0],
+                }
+            };
+            console.log(data);
+            USER_API.createUser(data).then(response => {
+                $form.resetFields();
+                window.location.reload();
+            })
+        })
     }
     handleCancel = () => {
         this.setState({
@@ -41,7 +74,7 @@ class SignUp extends Component {
                         </Button>
                         ]}
                     >
-                        <Form name='signup_form' onFinish={this._submit}>
+                        <Form name='signup_form' onFinish={this._submit} ref={this.formRef}>
                             <Form.Item
                                 name="first_name"
                                 rules={[{ required: true, message: 'Please input first name!' }]}
@@ -60,7 +93,30 @@ class SignUp extends Component {
                                 name="email"
                                 rules={[{ required: true, message: 'Please input email!' }]}
                             >
-                                <Input size="large" placeholder="Email" prefix={<UserOutlined />} />
+                                <Input size="large" placeholder="Email" prefix={<MailOutlined />} />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="mobile"
+                                rules={[{ required: true, message: 'Please input mobile number!' }]}
+                            >
+                                <Input size="large" placeholder="Mobile No" prefix={<MobileOutlined />} />
+                            </Form.Item>
+
+                            <Form.Item
+                                name="dob"
+                                rules={[{ required: true, message: 'Please input DOB!' }]}
+                            >
+                                <DatePicker placeholder="DOB" prefix={<CalendarOutlined />}/>
+                            </Form.Item>
+
+                            <Form.Item
+                                name="gender"
+                            >
+                                <Radio.Group>
+                                    <Radio.Button value="Male">Male</Radio.Button>
+                                    <Radio.Button value="Female">Female</Radio.Button>
+                                </Radio.Group>
                             </Form.Item>
                             
                             <Form.Item

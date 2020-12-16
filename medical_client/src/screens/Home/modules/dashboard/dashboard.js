@@ -50,14 +50,14 @@ class Dashboard extends React.Component {
                 </Row>
 
                 <Row gutter={[16, 16]}>
-                    <Col key="0" span={15}>
+                    <Col key="0" span={12}>
                         <div className='row-div'>
                             <UPLOAD_FORM />
                         </div>
                         
                     </Col>
 
-                    <Col key="1" span={9}>
+                    <Col key="1" span={12}>
                         <div className='row-div'>
                             <PIE_PLOT/>
                         </div>

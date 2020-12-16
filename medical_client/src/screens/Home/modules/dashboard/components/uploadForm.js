@@ -53,8 +53,9 @@ class UPLOAD_FORM extends React.Component {
         const imgURL = this.state.imageUrl;
         let $form = this.formRef.current
         this._switchDiagnosignState()
-        diagnose(imgURL, this._switchDiagnosignState.bind(this));
-        window.location.reload();
+        diagnose(imgURL, this._switchDiagnosignState.bind(this)).then( res => {
+            window.location.reload();
+        })
     }
 
     render(){ 
