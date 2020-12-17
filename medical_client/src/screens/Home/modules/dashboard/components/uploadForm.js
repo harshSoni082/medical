@@ -8,11 +8,11 @@ import diagnose from 'model/index';
 
 
 const layout = {
-    labelCol: { span: 3 },
-    wrapperCol: { span: 18 },
+    labelCol: { span: 4 },
+    wrapperCol: { span: 17 },
   };
 const tailLayout = {
-    wrapperCol: { offset: 3, span: 16 },
+    wrapperCol: { offset: 4, span: 17 },
 };
 
 
