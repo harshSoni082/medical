@@ -14,7 +14,7 @@ class Country(StatusMixin, TimeStampedModel):
 
 
 class State(StatusMixin, TimeStampedModel):
-    country = models.ForeignKey("Country", models.SET_NULL, blank=True, null=True)
+    country = models.ForeignKey("Country", models.SET_NULL, blank=True, null=True, related_name="core_country")
     state = models.CharField(_("State"), max_length=50, blank=True, null=True)
 
     def __str__(self):
@@ -22,7 +22,7 @@ class State(StatusMixin, TimeStampedModel):
 
 
 class City(StatusMixin, TimeStampedModel):
-    state = models.ForeignKey("State", models.SET_NULL, blank=True, null=True)
+    state = models.ForeignKey("State", models.SET_NULL, blank=True, null=True, related_name="core_state")
     city = models.CharField(_("city"), max_length=50, blank=True, null=True)
 
     def __str__(self):
